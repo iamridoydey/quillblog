@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    container_name: quillblog_db
+    environment:
+      PUSER: postgres
+      POSTGRES_PASSWORD: quillblog
+      POSTGRES_DB: quillblog
+    ports:
+      - "5421:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
