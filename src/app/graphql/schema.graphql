@@ -1,0 +1,175 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String
+  email: String!
+  profilePic: String
+  title: String
+  bio: String
+  posts: [Post]
+  blogs: [Blog]
+  blogPosts: [BlogPost]
+  comments: [Comment]
+  following: [User]
+  followers: [User]
+  followedBlogs: [Blog]
+}
+
+type Blog {
+  id: ID!
+  userId: ID!
+  shortName: String!
+  title: String!
+  description: String
+  createdAt: String!
+  user: User!
+  blogPosts: [BlogPost]
+  tags: [Tag]
+  followers: [User]
+}
+
+type BlogPost {
+  id: ID!
+  userId: ID!
+  blogId: ID!
+  title: String!
+  thumbnail: String
+  content: Json!
+  likes: Int!
+  comments: [Comment]
+  createdAt: String!
+  blogPostTags: [BlogPostTag]
+}
+
+type Post {
+  id: ID!
+  userId: ID!
+  thumbnail: String
+  content: Json!
+  likes: Int!
+  comments: [Comment]
+  createdAt: String!
+  postTags: [PostTag]
+}
+
+type Comment {
+  id: ID!
+  userId: ID!
+  postId: ID
+  blogPostId: ID
+  content: Json!
+  likes: Int!
+  isEdited: Boolean
+  createdAt: String!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  blogTags: [BlogTag]
+  postTags: [PostTag]
+  blogPostTags: [BlogPostTag]
+}
+
+type BlogTag {
+  blogId: ID!
+  tagId: ID!
+}
+
+type BlogPostTag {
+  blogPostId: ID!
+  tagId: ID!
+}
+
+type PostTag {
+  postId: ID!
+  tagId: ID!
+}
+
+type UserFollow {
+  followerId: ID!
+  followedId: ID!
+  createdAt: String!
+}
+
+type UserFollowsBlog {
+  userId: ID!
+  blogId: ID!
+}
+
+# ----------------------------------------
+#               QUERIES
+# ----------------------------------------
+
+type Query {
+  # User-related queries
+  getUsers: [User]
+  getUserById(id: ID!): User
+  getUserByEmail(email: String!): User
+  getUserByUsername(username: String!): User
+
+  # Blog-related queries
+  getBlogs: [Blog]
+  getBlog(id: ID!): Blog
+
+  # BlogPost-related queries
+  getBlogPosts: [BlogPost]
+  getBlogPostById(id: ID!): BlogPost
+  getBlogPostByTitle(title: String!): BlogPost
+
+  # Post-related queries
+  getPosts: [Post]
+  getPostById(id: ID!): Post
+
+  # Comment-related queries
+  getComments: [Comment]
+
+  # Tag-related queries
+  getTags: [Tag]
+  getTagByName(name: String!): Tag
+  getTagById(id: ID!): Tag
+}
+
+# ----------------------------------------
+#               MUTATION
+# ----------------------------------------
+
+type Mutation {
+  createUser(
+    email: String!
+    password: String!
+  ): User
+
+  createBlog(
+    userId: ID!
+    shortName: String!
+    title: String!
+    description: String
+  ): Blog
+
+  createBlogPost(
+    userId: ID!
+    blogId: ID!
+    title: String!
+    thumbnail: String
+    content: Json!
+  ): BlogPost
+
+  createPost(userId: ID!, thumbnail: string, content: Json!): Post
+
+  createComment(
+    userId: ID!
+    postId: String!
+    blogPostId: String!
+    content: Json!
+    postId: ID
+    blogPostId: ID
+  ): Comment
+
+  createTag(name: String!): Tag
+  createBlogTag(blogId: String!, tagId: String!): BlogTag
+  createBlogPostTag(blogPostId: String!, tagId: String!): BlogPostTag
+  createBlogTag(postId: String!, tagId: String!): PostTag
+  setUserFollow(followerId: String!, followedId: String!): User
+  setFollowsBlog(userId: String!, blogId: String!): Blog
+}
