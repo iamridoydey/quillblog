@@ -7,17 +7,140 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // User schema
 model User {
-  id Int @id @default(autoincrement())
-  firstName String 
-  lastName String?
-  username String @unique
-  email String @unique
-  password String 
-  profilePic String?
-  title String?
-  bio String?
-  createdAt DateTime
+  id            Int      @id @default(autoincrement())
+  firstName     String
+  lastName      String?
+  username      String   @unique
+  email         String   @unique
+  password      String
+  profilePic    String?
+  title         String?
+  bio           String?
+  createdAt     DateTime @default(now())
+  posts         Post[]
+  blog          Blog[]
+  blogPosts     BlogPost[]
+  comments      Comment[]
+  following     UserFollow[]   @relation("Following")
+  followers     UserFollow[]   @relation("Followers")
+  followedBlogs UserFollowsBlog[]
+  @@index([username])
+}
+
+// Blog schema
+model Blog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  shortName   String   @unique
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  blogPosts   BlogPost[]
+  blogTags    BlogTag[]
+  followers   UserFollowsBlog[]
+  @@index([shortName])
+}
+
+// BlogPost schema
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  blogId      Int
+  title       String
+  thumbnail   String?
+  content     Json     @default("{}")
+  likes       Int      @default(0)
+  comments    Comment[]
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  blog        Blog     @relation(fields: [blogId], references: [id])
+  blogPostTags BlogPostTag[]
+  @@index([userId])
+}
+
+// Post schema
+model Post {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  thumbnail String?
+  content   Json     @default("{}")
+  likes     Int      @default(0)
+  comments  Comment[]
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  postTags  PostTag[]
+}
+
+// Comment schema
+model Comment {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  postId     Int?
+  blogPostId Int?
+  content    Json     @default("{}")
+  likes      Int      @default(0)
+  isEdited   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  post       Post?    @relation(fields: [postId], references: [id])
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id])
+}
+
+// Tag schema
+model Tag {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  blogTags     BlogTag[]
+  postTags     PostTag[]
+  blogPostTags BlogPostTag[]
+  @@index([name])
+}
+
+// Join table for Blog and Tag
+model BlogTag {
+  blogId  Int
+  tagId   Int
+  blog    Blog @relation(fields: [blogId], references: [id])
+  tag     Tag  @relation(fields: [tagId], references: [id])
+  @@id([blogId, tagId])
+}
+
+// Join table for BlogPost and Tag
+model BlogPostTag {
+  blogPostId Int
+  tagId      Int
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
+  @@id([blogPostId, tagId])
+}
+
+// Join table for Post and Tag
+model PostTag {
+  postId Int
+  tagId  Int
+  post   Post @relation(fields: [postId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+  @@id([postId, tagId])
+}
+
+// Follow relationship between users
+model UserFollow {
+  followerId Int
+  followedId Int
+  createdAt  DateTime @default(now())
+  follower   User     @relation("Following", fields: [followerId], references: [id])
+  followed   User     @relation("Followers", fields: [followedId], references: [id])
+  @@id([followerId, followedId])
+}
+
+// Follow relationship between users and blogs
+model UserFollowsBlog {
+  userId Int
+  blogId Int
+  user   User @relation(fields: [userId], references: [id])
+  blog   Blog @relation(fields: [blogId], references: [id])
+  @@unique([userId, blogId])
 }
