@@ -23,6 +23,7 @@ model User {
   blogs         Blog[]
   blogPosts     BlogPost[]
   comments      Comment[]
+  likes         Like[]
   following     UserFollow[]   @relation("Following")
   followers     UserFollow[]   @relation("Followers")
   followedBlogs UserFollowsBlog[]
@@ -44,19 +45,20 @@ model Blog {
   @@index([shortName])
 }
 
+
 // BlogPost schema
 model BlogPost {
-  id          String   @id @default(uuid())
-  userId      String
-  blogId      String
-  title       String
-  thumbnail   String?
-  content     Json     @default("{}")
-  likes       Int      @default(0)
-  comments    Comment[]
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
-  blog        Blog     @relation(fields: [blogId], references: [id])
+  id           String   @id @default(uuid())
+  userId       String
+  blogId       String
+  title        String
+  thumbnail    String?
+  content      Json     @default("{}")
+  likes        Like[]
+  comments     Comment[]
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  blog         Blog     @relation(fields: [blogId], references: [id])
   blogPostTags BlogPostTag[]
   @@index([userId])
 }
@@ -67,7 +69,7 @@ model Post {
   userId    String
   thumbnail String?
   content   Json     @default("{}")
-  likes     Int      @default(0)
+  likes     Like[]
   comments  Comment[]
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
@@ -76,17 +78,17 @@ model Post {
 
 // Comment schema
 model Comment {
-  id         String   @id @default(uuid())
-  userId     String
-  postId     String?
-  blogPostId String?
-  content    Json     @default("{}")
-  likes      Int      @default(0)
-  isEdited   Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
-  post       Post?    @relation(fields: [postId], references: [id])
-  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id])
+  id          String   @id @default(uuid())
+  userId      String
+  postId      String?
+  blogPostId  String?
+  content     Json     @default("{}")
+  likes       Like[]
+  isEdited    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  post        Post?    @relation(fields: [postId], references: [id])
+  blogPost    BlogPost? @relation(fields: [blogPostId], references: [id])
 }
 
 // Tag schema
@@ -101,10 +103,10 @@ model Tag {
 
 // Join table for Blog and Tag
 model BlogTag {
-  blogId  String
-  tagId   String
-  blog    Blog @relation(fields: [blogId], references: [id])
-  tag     Tag  @relation(fields: [tagId], references: [id])
+  blogId String
+  tagId  String
+  blog   Blog @relation(fields: [blogId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
   @@id([blogId, tagId])
 }
 
@@ -143,4 +145,19 @@ model UserFollowsBlog {
   user   User @relation(fields: [userId], references: [id])
   blog   Blog @relation(fields: [blogId], references: [id])
   @@unique([userId, blogId])
+}
+
+// Like schema
+model Like {
+  id         String   @id @default(uuid())
+  userId     String
+  postId     String?
+  blogPostId String?
+  commentId  String?
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  post       Post?    @relation(fields: [postId], references: [id])
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id])
+  comment    Comment? @relation(fields: [commentId], references: [id])
+  @@unique([userId, postId, blogPostId, commentId])
 }
