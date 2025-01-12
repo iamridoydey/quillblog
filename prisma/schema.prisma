@@ -9,7 +9,7 @@ datasource db {
 
 // User schema
 model User {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(uuid())
   firstName     String
   lastName      String?
   username      String   @unique
@@ -20,7 +20,7 @@ model User {
   bio           String?
   createdAt     DateTime @default(now())
   posts         Post[]
-  blog          Blog[]
+  blogs         Blog[]
   blogPosts     BlogPost[]
   comments      Comment[]
   following     UserFollow[]   @relation("Following")
@@ -31,8 +31,8 @@ model User {
 
 // Blog schema
 model Blog {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String   @id @default(uuid())
+  userId      String
   shortName   String   @unique
   title       String
   description String
@@ -46,9 +46,9 @@ model Blog {
 
 // BlogPost schema
 model BlogPost {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  blogId      Int
+  id          String   @id @default(uuid())
+  userId      String
+  blogId      String
   title       String
   thumbnail   String?
   content     Json     @default("{}")
@@ -63,8 +63,8 @@ model BlogPost {
 
 // Post schema
 model Post {
-  id        Int      @id @default(autoincrement())
-  userId    Int
+  id        String   @id @default(uuid())
+  userId    String
   thumbnail String?
   content   Json     @default("{}")
   likes     Int      @default(0)
@@ -76,10 +76,10 @@ model Post {
 
 // Comment schema
 model Comment {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  postId     Int?
-  blogPostId Int?
+  id         String   @id @default(uuid())
+  userId     String
+  postId     String?
+  blogPostId String?
   content    Json     @default("{}")
   likes      Int      @default(0)
   isEdited   Boolean  @default(false)
@@ -91,7 +91,7 @@ model Comment {
 
 // Tag schema
 model Tag {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   name         String   @unique
   blogTags     BlogTag[]
   postTags     PostTag[]
@@ -101,8 +101,8 @@ model Tag {
 
 // Join table for Blog and Tag
 model BlogTag {
-  blogId  Int
-  tagId   Int
+  blogId  String
+  tagId   String
   blog    Blog @relation(fields: [blogId], references: [id])
   tag     Tag  @relation(fields: [tagId], references: [id])
   @@id([blogId, tagId])
@@ -110,8 +110,8 @@ model BlogTag {
 
 // Join table for BlogPost and Tag
 model BlogPostTag {
-  blogPostId Int
-  tagId      Int
+  blogPostId String
+  tagId      String
   blogPost   BlogPost @relation(fields: [blogPostId], references: [id])
   tag        Tag      @relation(fields: [tagId], references: [id])
   @@id([blogPostId, tagId])
@@ -119,8 +119,8 @@ model BlogPostTag {
 
 // Join table for Post and Tag
 model PostTag {
-  postId Int
-  tagId  Int
+  postId String
+  tagId  String
   post   Post @relation(fields: [postId], references: [id])
   tag    Tag  @relation(fields: [tagId], references: [id])
   @@id([postId, tagId])
@@ -128,8 +128,8 @@ model PostTag {
 
 // Follow relationship between users
 model UserFollow {
-  followerId Int
-  followedId Int
+  followerId String
+  followedId String
   createdAt  DateTime @default(now())
   follower   User     @relation("Following", fields: [followerId], references: [id])
   followed   User     @relation("Followers", fields: [followedId], references: [id])
@@ -138,8 +138,8 @@ model UserFollow {
 
 // Follow relationship between users and blogs
 model UserFollowsBlog {
-  userId Int
-  blogId Int
+  userId String
+  blogId String
   user   User @relation(fields: [userId], references: [id])
   blog   Blog @relation(fields: [blogId], references: [id])
   @@unique([userId, blogId])
