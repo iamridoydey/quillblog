@@ -3,19 +3,22 @@ export interface BlogPayload {
   shortName: string;
   title: string;
   description?: string;
+  coverPic?: string;
 }
 
 export interface CreateBlogPayload{
   userId: string;
   shortname: string;
   title: string;
-  description: string;
+  description?: string;
+  coverPic?: string;
 }
 export interface UpdateBlogPayload{
   id: string;
   shortName?: string;
   title?: string;
   description?: string;
+  coverPic?: string;
 }
 
 export interface DeleteBlogPayload{

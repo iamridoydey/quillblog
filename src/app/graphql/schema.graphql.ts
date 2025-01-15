@@ -2,6 +2,7 @@ import { gql } from "graphql-tag";
 
 const typeDefs = gql`
   scalar Json
+  scalar Date
 
   type User {
     id: ID!
@@ -10,8 +11,12 @@ const typeDefs = gql`
     username: String!
     email: String!
     profilePic: String
+    coverPic: String
     title: String
     bio: String
+    birthDate: Date
+    location: String
+    createdAt: Date
     posts: [Post]
     blogs: [Blog]
     blogPosts: [BlogPost]
@@ -27,7 +32,8 @@ const typeDefs = gql`
     shortName: String!
     title: String!
     description: String
-    createdAt: String!
+    createdAt: Date!
+    coverPic: String
     blogPosts: [BlogPost]
     tags: [Tag]
     followers: [User]
@@ -42,7 +48,7 @@ const typeDefs = gql`
     content: Json!
     likes: [Like!]
     comments: [Comment!]
-    createdAt: String!
+    createdAt: Date!
     blogPostTags: [BlogPostTag]
   }
 
@@ -53,7 +59,7 @@ const typeDefs = gql`
     content: Json!
     likes: [Like!]
     comments: [Comment!]
-    createdAt: String!
+    createdAt: Date!
     postTags: [PostTag]
   }
 
@@ -108,7 +114,7 @@ const typeDefs = gql`
     postId: ID
     blogPostId: ID
     commentId: ID
-    createdAt: String!
+    createdAt: Date!
   }
 
   type Query {
@@ -138,8 +144,11 @@ const typeDefs = gql`
       username: String
       email: String
       profilePic: String
+      coverPic: String
       title: String
       bio: String
+      birthDate: Date
+      location: String
     ): User
 
     deleteUser(id: ID!): User
@@ -150,12 +159,14 @@ const typeDefs = gql`
       shortName: String!
       title: String!
       description: String
+      coverPic: String
     ): Blog
     updateBlog(
       id: ID!
       shortName: String
       title: String
       description: String
+      coverpic: String
     ): Blog
     deleteBlog(id: ID!): Blog
 

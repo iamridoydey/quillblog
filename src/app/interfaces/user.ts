@@ -17,8 +17,11 @@ export interface UpdateUserPayload {
   email?: string;
   password?: string;
   profilePic?: string;
+  coverPic?: string;
   title?: string;
   bio?: string;
+  birthDate?: Date;
+  location?: string;
 }
 
 export interface DeleteUserPayload {
