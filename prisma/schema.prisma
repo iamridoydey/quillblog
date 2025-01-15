@@ -16,8 +16,12 @@ model User {
   email         String   @unique
   password      String
   profilePic    String?
+  coverPic      String?
+  isVerfied     Boolean  @default(false)
   title         String?
   bio           String?
+  birthdate     String?
+  location      String?
   createdAt     DateTime @default(now())
   posts         Post[]
   blogs         Blog[]
@@ -35,6 +39,7 @@ model Blog {
   id          String   @id @default(uuid())
   userId      String
   shortName   String   @unique
+  coverPic    String?
   title       String
   description String
   createdAt   DateTime @default(now())
