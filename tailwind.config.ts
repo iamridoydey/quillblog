@@ -12,6 +12,10 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        lato: ["Lato", "sans-serif"],
+        merriweather: ["Merriweather", "serif"],
+      },
     },
   },
   plugins: [],
