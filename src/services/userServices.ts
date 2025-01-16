@@ -5,7 +5,9 @@ import {
   GetUserPayload,
   UpdateUserPayload,
   UserPayload,
+  UserVerificationPayload,
 } from "@/app/interfaces/user";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { prismaClient } from "@/lib/db";
 import { cleanObject } from "@/utility/payloadHelper";
 
@@ -56,6 +58,40 @@ export class UserServices {
     } catch (error: any) {
       console.log("Error ", error.message);
       return {};
+    }
+  }
+
+  public static async verifyUser(payload: UserVerificationPayload) {
+    try {
+      const { token } = payload;
+      const SECRET_KEY = "pritedeyquillblog";
+
+      const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
+
+      if (!decoded || typeof decoded === "string") {
+        console.log("Not a valid token!");
+        return false;
+      }
+      // Check whether the user exists
+      const user = await prismaClient.user.findUnique({
+        where: { id: decoded.userId },
+      });
+
+      if (!user) {
+        console.log("User not found!");
+        return false;
+      }
+      // Update the user's verification status
+      await prismaClient.user.update({
+        where: { id: decoded.userId },
+        data: { isVerified: true },
+      });
+
+      console.log("User verified successfully!");
+      return true;
+    } catch (error: any) {
+      console.log("User Verification Error: ", error.message);
+      return false;
     }
   }
 

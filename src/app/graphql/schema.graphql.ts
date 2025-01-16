@@ -12,6 +12,7 @@ const typeDefs = gql`
     email: String!
     profilePic: String
     coverPic: String
+    isVerified: Boolean
     title: String
     bio: String
     birthDate: Date
@@ -152,6 +153,9 @@ const typeDefs = gql`
     ): User
 
     deleteUser(id: ID!): User
+
+    # Verify user
+    verifyUser(token: String!): Boolean
 
     # Blog specific mutation
     createBlog(

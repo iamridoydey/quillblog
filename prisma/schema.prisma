@@ -17,7 +17,7 @@ model User {
   password      String
   profilePic    String?
   coverPic      String?
-  isVerfied     Boolean  @default(false)
+  isVerified    Boolean  @default(false)
   title         String?
   bio           String?
   birthDate     DateTime?

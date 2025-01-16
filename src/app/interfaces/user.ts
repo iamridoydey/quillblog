@@ -27,3 +27,13 @@ export interface UpdateUserPayload {
 export interface DeleteUserPayload {
   id: string;
 }
+
+
+export interface UserVerificationPayload {
+  token: string;
+}
+
+export interface GenerateTokenPayload {
+  userId: string;
+}
+

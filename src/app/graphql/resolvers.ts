@@ -5,6 +5,7 @@ import {
   GetUserPayload,
   UpdateUserPayload,
   UserPayload,
+  UserVerificationPayload,
 } from "../interfaces/user";
 import { BlogServices } from "@/services/blogServices";
 import {
@@ -80,6 +81,11 @@ const resolvers = {
     },
     deleteUser: async (_: any, payload: DeleteUserPayload) => {
       return await UserServices.deleteUser(payload);
+    },
+
+    // Verify user
+    verifyUser: async (_:any, payload: UserVerificationPayload) => {
+      return  await UserServices.verifyUser(payload);
     },
 
     // Blog Specific mutation
