@@ -1,5 +1,12 @@
-"use client"
-import { createContext, ReactNode, useContext, useState } from "react";
+"use client";
+import { usePathname } from "next/navigation";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 // Define the shape of the context data
 interface ActivePageContextData {
@@ -14,7 +21,15 @@ const ActivePageContext = createContext<ActivePageContextData | undefined>(
 
 // Create provider for this context
 export const ActivePageProvider = ({ children }: { children: ReactNode }) => {
-  const [activePage, setActivePage] = useState<string>("home");
+  const pathname = usePathname();
+  const [activePage, setActivePage] = useState<string>(
+    pathname.substring(1) || "home"
+  );
+
+  useEffect(() => {
+    const path = pathname.substring(1);
+    setActivePage(path || "home");
+  }, [pathname]);
 
   return (
     <ActivePageContext.Provider value={{ activePage, setActivePage }}>
