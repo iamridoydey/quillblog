@@ -7,7 +7,7 @@ export default function Navbar() {
     { title: "Search Items", url: "search", icon: "search" },
     { title: "Blogs", url: "blogs", icon: "blogs" },
     { title: "Saved Items", url: "saveditems", icon: "savedItems" },
-    { title: "Profile", url: "profile", icon: "user" },
+    { title: "Profile", url: "profile", icon: "profile" },
     { title: "Settings", url: "settings", icon: "settings" },
   ];
 
