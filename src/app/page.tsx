@@ -1,7 +1,9 @@
-export default function Home() {
+import MainContent from "./[page]/layout";
+
+export default function Main() {
   return (
-    <>
-      <h1>hello world</h1>
-    </>
+    <div className="main_wrapper w-full">
+      <MainContent />
+    </div>
   );
 }
