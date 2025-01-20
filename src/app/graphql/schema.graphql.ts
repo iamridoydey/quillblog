@@ -1,7 +1,7 @@
 import { gql } from "graphql-tag";
 
 const typeDefs = gql`
-  scalar Json
+  scalar JSON
   scalar Date
 
   type User {
@@ -20,7 +20,7 @@ const typeDefs = gql`
     createdAt: Date
     posts: [Post]
     blogs: [Blog]
-    blogPosts: [BlogPost]
+    blogArticles: [BlogArticle]
     comments: [Comment]
     following: [User]
     followers: [User]
@@ -35,29 +35,29 @@ const typeDefs = gql`
     description: String
     createdAt: Date!
     coverPic: String
-    blogPosts: [BlogPost]
+    blogArticles: [BlogArticle]
     tags: [Tag]
     followers: [User]
   }
 
-  type BlogPost {
+  type BlogArticle {
     id: ID!
     userId: ID!
     blogId: ID!
     title: String!
     thumbnail: String
-    content: Json!
+    content: JSON!
     likes: [Like!]
     comments: [Comment!]
     createdAt: Date!
-    blogPostTags: [BlogPostTag]
+    blogArticleTags: [BlogArticleTag]
   }
 
   type Post {
     id: ID!
     userId: ID!
     thumbnail: String
-    content: Json!
+    content: JSON!
     likes: [Like!]
     comments: [Comment!]
     createdAt: Date!
@@ -68,11 +68,11 @@ const typeDefs = gql`
     id: ID!
     userId: ID!
     postId: ID
-    blogPostId: ID
-    content: Json!
+    blogArticleId: ID
+    content: JSON!
     likes: [Like!]
     isEdited: Boolean
-    createdAt: String!
+    createdAt: Date!
   }
 
   type Tag {
@@ -80,7 +80,7 @@ const typeDefs = gql`
     name: String!
     blogTags: [BlogTag]
     postTags: [PostTag]
-    blogPostTags: [BlogPostTag]
+    blogArticleTags: [BlogArticleTag]
   }
 
   type BlogTag {
@@ -88,8 +88,8 @@ const typeDefs = gql`
     tagId: ID!
   }
 
-  type BlogPostTag {
-    blogPostId: ID!
+  type BlogArticleTag {
+    blogArticleId: ID!
     tagId: ID!
   }
 
@@ -101,7 +101,7 @@ const typeDefs = gql`
   type UserFollow {
     followerId: ID!
     followedId: ID!
-    createdAt: String!
+    createdAt: Date!
   }
 
   type UserFollowsBlog {
@@ -113,7 +113,7 @@ const typeDefs = gql`
     id: ID!
     userId: ID!
     postId: ID
-    blogPostId: ID
+    blogArticleId: ID
     commentId: ID
     createdAt: Date!
   }
@@ -131,9 +131,9 @@ const typeDefs = gql`
     getPosts: [Post]
     getPost(id: ID!): Post
 
-    # BlogPost specific queries
-    getBlogPosts: [BlogPost]
-    getBlogPost(id: ID!): BlogPost
+    # BlogArticle specific queries
+    getBlogArticles: [BlogArticle]
+    getBlogArticle(id: ID!): BlogArticle
   }
 
   type Mutation {
@@ -170,42 +170,37 @@ const typeDefs = gql`
       shortName: String
       title: String
       description: String
-      coverpic: String
+      coverPic: String
     ): Blog
     deleteBlog(id: ID!): Blog
 
     # Post specific mutation
-    createPost(userId: ID!, thumbnail: String, content: Json!): Post
-    updatePost(id: ID!, thumbnail: String, content: Json): Post
+    createPost(userId: ID!, thumbnail: String, content: JSON!): Post
+    updatePost(id: ID!, thumbnail: String, content: JSON): Post
     deletePost(id: ID!): Post
 
-    # BlogPost specific mutation
-    createBlogPost(
+    # BlogArticle specific mutation
+    createBlogArticle(
       userId: ID!
       blogId: ID!
       title: String!
       thumbnail: String
-      content: Json!
-    ): BlogPost
-    updateBlogPost(id: ID!, thumbnail: String, content: Json): BlogPost
-    deleteBlogPost(id: ID!): BlogPost
+      content: JSON!
+    ): BlogArticle
+    updateBlogArticle(id: ID!, thumbnail: String, content: JSON): BlogArticle
+    deleteBlogArticle(id: ID!): BlogArticle
 
     # Like specific mutation
-    toggleLike(
-      userId: ID!
-      postId: ID
-      blogPostId: ID
-      commentId: ID
-    ): Int
+    toggleLike(userId: ID!, postId: ID, blogArticleId: ID, commentId: ID): Int
 
     # Comment specific mutation
     createComment(
       userId: ID!
       postId: ID
-      blogPostId: ID
-      content: Json!
+      blogArticleId: ID
+      content: JSON!
     ): Comment
-    updateComment(id: ID!, content: String!): Comment
+    updateComment(id: ID!, content: JSON!): Comment
     deleteComment(id: ID!): Comment
 
     # Tag specific mutation
@@ -215,10 +210,10 @@ const typeDefs = gql`
     deletePostTag(postId: ID!, name: String!): PostTag
     createBlogTag(blogId: ID!, name: String!): BlogTag
     deleteBlogTag(blogId: ID!, name: String!): BlogTag
-    createBlogPostTag(blogPostId: ID!, name: String!): BlogPostTag
-    deleteBlogPostTag(blogPostId: ID!, name: String!): BlogPostTag
+    createBlogArticleTag(blogArticleId: ID!, name: String!): BlogArticleTag
+    deleteBlogArticleTag(blogArticleId: ID!, name: String!): BlogArticleTag
 
-    #Follow specific mutation
+    # Follow specific mutation
     toggleUserFollow(followerId: ID!, followedId: ID!): UserFollow
     toggleBlogFollow(userId: ID!, blogId: ID!): UserFollowsBlog
   }
