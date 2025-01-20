@@ -25,7 +25,7 @@ model User {
   createdAt     DateTime @default(now())
   posts         Post[]
   blogs         Blog[]
-  blogPosts     BlogPost[]
+  blogArticles  BlogArticle[]
   comments      Comment[]
   likes         Like[]
   following     UserFollow[]   @relation("Following")
@@ -44,15 +44,14 @@ model Blog {
   description String?
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
-  blogPosts   BlogPost[]
+  blogArticles BlogArticle[]
   blogTags    BlogTag[]
   followers   UserFollowsBlog[]
   @@index([shortName])
 }
 
-
-// BlogPost schema
-model BlogPost {
+// BlogArticle schema
+model BlogArticle {
   id           String   @id @default(uuid())
   userId       String
   blogId       String
@@ -64,7 +63,7 @@ model BlogPost {
   createdAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id])
   blog         Blog     @relation(fields: [blogId], references: [id])
-  blogPostTags BlogPostTag[]
+  blogArticleTags BlogArticleTag[]
   @@index([userId])
 }
 
@@ -86,14 +85,14 @@ model Comment {
   id          String   @id @default(uuid())
   userId      String
   postId      String?
-  blogPostId  String?
+  blogArticleId String?
   content     Json     @default("{}")
   likes       Like[]
   isEdited    Boolean  @default(false)
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
   post        Post?    @relation(fields: [postId], references: [id])
-  blogPost    BlogPost? @relation(fields: [blogPostId], references: [id])
+  blogArticle BlogArticle? @relation(fields: [blogArticleId], references: [id])
 }
 
 // Tag schema
@@ -102,7 +101,7 @@ model Tag {
   name         String   @unique
   blogTags     BlogTag[]
   postTags     PostTag[]
-  blogPostTags BlogPostTag[]
+  blogArticleTags BlogArticleTag[]
   @@index([name])
 }
 
@@ -115,13 +114,13 @@ model BlogTag {
   @@id([blogId, tagId])
 }
 
-// Join table for BlogPost and Tag
-model BlogPostTag {
-  blogPostId String
-  tagId      String
-  blogPost   BlogPost @relation(fields: [blogPostId], references: [id])
-  tag        Tag      @relation(fields: [tagId], references: [id])
-  @@id([blogPostId, tagId])
+// Join table for BlogArticle and Tag
+model BlogArticleTag {
+  blogArticleId String
+  tagId         String
+  blogArticle   BlogArticle @relation(fields: [blogArticleId], references: [id])
+  tag           Tag          @relation(fields: [tagId], references: [id])
+  @@id([blogArticleId, tagId])
 }
 
 // Join table for Post and Tag
@@ -157,12 +156,12 @@ model Like {
   id         String   @id @default(uuid())
   userId     String
   postId     String?
-  blogPostId String?
+  blogArticleId String?
   commentId  String?
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
   post       Post?    @relation(fields: [postId], references: [id])
-  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id])
+  blogArticle BlogArticle? @relation(fields: [blogArticleId], references: [id])
   comment    Comment? @relation(fields: [commentId], references: [id])
-  @@unique([userId, postId, blogPostId, commentId])
+  @@unique([userId, postId, blogArticleId, commentId])
 }
