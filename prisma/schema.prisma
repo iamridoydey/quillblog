@@ -24,7 +24,7 @@ model User {
   location      String?
   createdAt     DateTime @default(now())
   posts         Post[]
-  blogs         Blog[]
+  blog          Blog?
   blogArticles  BlogArticle[]
   comments      Comment[]
   likes         Like[]
@@ -37,7 +37,7 @@ model User {
 // Blog schema
 model Blog {
   id          String   @id @default(uuid())
-  userId      String
+  userId      String   @unique
   shortName   String   @unique
   coverPic    String?
   title       String
