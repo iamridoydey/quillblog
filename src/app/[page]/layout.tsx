@@ -1,3 +1,4 @@
+import { ActiveMiniNavProvider } from "@/hook/ActiveMiniNavItem";
 
 export default function MainLayout({
   children,
@@ -5,8 +6,8 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className="main_layout">
-      {children}
-    </section>
+    <ActiveMiniNavProvider>
+      <section className="main_layout">{children}</section>
+    </ActiveMiniNavProvider>
   );
 }
