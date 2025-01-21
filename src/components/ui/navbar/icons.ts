@@ -15,7 +15,7 @@ type IconComponentType = React.ForwardRefExoticComponent<
 const icons: { [key: string]: IconComponentType } = {
   home: HomeIcon,
   search: SearchIcon,
-  blogs: NotebookTextIcon,
+  myblog: NotebookTextIcon,
   bookmarks: Bookmark,
   profile: User,
   settings: SettingsIcon,

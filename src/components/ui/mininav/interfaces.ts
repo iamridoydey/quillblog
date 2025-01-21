@@ -1,4 +1,4 @@
 export interface MiniNavPayload {
-  page: string;
+  item: string;
   title: string
 }

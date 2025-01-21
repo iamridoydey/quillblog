@@ -35,14 +35,14 @@ export default function Webnav({ items }: { items: NavItemObj[] }) {
             >
               <Link
                 href={`/${item.url}`}
-                className={`flex flex-row items-center justify-center gap-1  nav_item p-3 mx-2 rounded-xl hover:bg-neutral-800 ${
+                className={`flex flex-row items-center justify-center gap-1  nav_item p-3 mx-2 rounded-xl hover:bg-gray-700 ${
                   activePage === item.url ? "bg-slate-900" : ""
                 }`}
               >
                 <span className="w-7 h-7">
                   {IconComponent && (
                     <IconComponent
-                      fill={item.url === activePage ? "#fff" : "#000"}
+                      fill={item.url === activePage ? "#fff" : "#111827"}
                       stroke={item.url === activePage ? "gray" : "#fff"}
                     />
                   )}

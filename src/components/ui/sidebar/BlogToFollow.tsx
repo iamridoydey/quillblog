@@ -2,10 +2,10 @@ import Link from 'next/link';
 import React from 'react'
 import { BlogToFollowPayload } from './interfaces';
 
-const BlogToFollow = ({ blogs }: { blogs: BlogToFollowPayload[] }) => {
+const BlogToFollow = ({ blogs, title }: { blogs: BlogToFollowPayload[], title:string }) => {
   return (
     <div className="tags_container border-[1px] border-zinc-600 rounded-lg">
-      <h3 className="title p-2 font-[22px]">Which To Follow </h3>
+      <h3 className="title p-2 font-[22px]">{title} </h3>
       <hr className="border-zinc-600" />
       <ul className="tag_items py-3 px-4 flex flex-col gap-3">
         {blogs.map((blog, index) => (

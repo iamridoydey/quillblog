@@ -5,7 +5,7 @@ export default function Navbar() {
   const items: NavItemObj[] = [
     { title: "Home", url: "home", icon: "home" },
     { title: "Search Items", url: "search", icon: "search" },
-    { title: "Blogs", url: "blogs", icon: "blogs" },
+    { title: "My Blog", url: "myblog", icon: "myblog" },
     { title: "Bookmarks", url: "bookmarks", icon: "bookmarks" },
     { title: "Profile", url: "profile", icon: "profile" },
     { title: "Settings", url: "settings", icon: "settings" },
