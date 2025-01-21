@@ -7,7 +7,7 @@ import NotFound from "@/components/Error/NotFound";
 // Dynamically import pages
 const Home = dynamic(() => import("./home/page"));
 const Search = dynamic(() => import("./Search/page"));
-const Blogs = dynamic(() => import("./blogs/page"));
+const MyBlog = dynamic(() => import("./myblog/page"));
 const Profile = dynamic(() => import("./profile/page"));
 const Bookmarks = dynamic(() => import("./bookmarks/page"));
 const Settings = dynamic(() => import("./settings/page"));
@@ -19,7 +19,7 @@ const PageHandlers: React.FC = () => {
   const pages: { [key: string]: React.JSX.Element } = {
     home: <Home />,
     search: <Search />,
-    blogs: <Blogs />,
+    myblog: <MyBlog />,
     profile: <Profile />,
     bookmarks: <Bookmarks />,
     settings: <Settings />,
