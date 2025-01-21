@@ -8,21 +8,14 @@ import {
 import TrendingTags from "@/components/ui/sidebar/TrendingTags";
 import UserToFollow from "@/components/ui/sidebar/UserToFollow";
 import BlogToFollow from "@/components/ui/sidebar/BlogToFollow";
+import { MiniNavPayload } from "@/components/ui/mininav/interfaces";
 
 export default function Home() {
-  // const pathname = usePathname();
-  // const [path, setPath] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   setPath(pathname.substring(1));
-  // }, [pathname]);
-
-  const navItems = ["Feeds", "Following User", "Following Blogs"];
-
-  // const navComponents: { [key: string]: React.FC } = {
-  //   followinguser: FollowingUser,
-  //   followingblogs: FollowingBlogs,
-  // };
+  const navItems: MiniNavPayload[] = [
+    { item: "feed", title: "Feed" },
+    { item: "followingusers", title: "Following Users" },
+    { item: "followingblogs", title: "Following Blogs" },
+  ];
 
   // Sidebar data
   const tags: TrendingTagsPayload[] = [
@@ -42,7 +35,6 @@ export default function Home() {
     { image: "👩‍💼", name: "Emily Johnson", username: "emilyj" },
   ];
 
-
   const blogs: BlogToFollowPayload[] = [
     { image: "🅱️", title: "Mastering JavaScript", shortname: "javascript" },
     { image: "📘", title: "Python Essentials", shortname: "python" },
@@ -50,7 +42,6 @@ export default function Home() {
     { image: "🚀", title: "Kotlin for Android", shortname: "kotlin" },
     { image: "🌐", title: "Next.js Basics", shortname: "nextjs" },
   ];
-
 
   return (
     <div className="flex gap-8">
@@ -78,7 +69,7 @@ export default function Home() {
             <UserToFollow users={users} />
 
             {/* Blog you can follow */}
-            <BlogToFollow blogs={blogs}/>
+            <BlogToFollow blogs={blogs} title={"Blog To Follow"} />
           </div>
         </div>
       </div>
