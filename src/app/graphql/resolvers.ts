@@ -22,17 +22,26 @@ import {
 } from "../interfaces/post";
 import { PostServices } from "@/services/postServices";
 import {
-  CreateBlogPostPayload,
-  DeleteBlogPostPayload,
-  GetBlogPostPayload,
-  UpdateBlogPostPayload,
-} from "../interfaces/blogPost";
-import { CreateCommentPayload, DeleteCommentPayload, UpdateCommentPayload } from "../interfaces/comment";
-import { BlogPostServices } from "@/services/blogPostServices";
+  CreateBlogArticlePayload,
+  DeleteBlogArticlePayload,
+  GetBlogArticlePayload,
+  UpdateBlogArticlePayload,
+} from "../interfaces/blogArticle";
+import {
+  CreateCommentPayload,
+  DeleteCommentPayload,
+  UpdateCommentPayload,
+} from "../interfaces/comment";
+import { BlogArticleServices } from "@/services/blogArticleServices";
 import { CommentServices } from "@/services/commentServices";
 import { ToggleLikePayload } from "../interfaces/like";
 import { LikeServices } from "@/services/likeServices";
-import { BlogPostTagPayload, BlogTagPayload, PostTagPayload, TagPayload } from "../interfaces/tag";
+import {
+  BlogArticleTagPayload,
+  BlogTagPayload,
+  PostTagPayload,
+  TagPayload,
+} from "../interfaces/tag";
 import { TagServices } from "@/services/tagServices";
 import { BlogFollowPayload, UserFollowPayload } from "../interfaces/follow";
 import { FollowServices } from "@/services/followServices";
@@ -64,11 +73,11 @@ const resolvers = {
     },
 
     // BlogPost speicif queries
-    getBlogPosts: async () => {
-      return await BlogPostServices.getBlogPosts();
+    getBlogArticles: async () => {
+      return await BlogArticleServices.getBlogArticles();
     },
-    getBlogPost: async (_: any, payload: GetBlogPostPayload) => {
-      return await BlogPostServices.getBlogPost(payload);
+    getBlogArticle: async (_: any, payload: GetBlogArticlePayload) => {
+      return await BlogArticleServices.getBlogArticle(payload);
     },
   },
   Mutation: {
@@ -84,8 +93,8 @@ const resolvers = {
     },
 
     // Verify user
-    verifyUser: async (_:any, payload: UserVerificationPayload) => {
-      return  await UserServices.verifyUser(payload);
+    verifyUser: async (_: any, payload: UserVerificationPayload) => {
+      return await UserServices.verifyUser(payload);
     },
 
     // Blog Specific mutation
@@ -111,21 +120,20 @@ const resolvers = {
     },
 
     // BlogPost Specific mutation
-    createBlogPost: async (_: any, payload: CreateBlogPostPayload) => {
-      return await BlogPostServices.createBlogPost(payload);
+    createBlogArticle: async (_: any, payload: CreateBlogArticlePayload) => {
+      return await BlogArticleServices.createBlogArticle(payload);
     },
-    updateBlogPost: async (_: any, payload: UpdateBlogPostPayload) => {
-      return await BlogPostServices.updateBlogPost(payload);
+    updateBlogArticle: async (_: any, payload: UpdateBlogArticlePayload) => {
+      return await BlogArticleServices.updateBlogArticle(payload);
     },
-    deleteBlogPost: async (_: any, payload: DeleteBlogPostPayload) => {
-      return await BlogPostServices.deleteBlogPost(payload);
+    deleteBlogArticle: async (_: any, payload: DeleteBlogArticlePayload) => {
+      return await BlogArticleServices.deleteBlogArticle(payload);
     },
 
     // Comment specific mutation
     createComment: async (_: any, payload: CreateCommentPayload) => {
-
-      const result =  await CommentServices.createComment(payload);
-      console.log("Comment, ", result)
+      const result = await CommentServices.createComment(payload);
+      console.log("Comment, ", result);
       return result;
     },
     updateComment: async (_: any, payload: UpdateCommentPayload) => {
@@ -160,20 +168,20 @@ const resolvers = {
     deleteBlogTag: async (_: any, payload: BlogTagPayload) => {
       return await TagServices.deleteBlogTag(payload);
     },
-    createBlogPostTag: async (_: any, payload: BlogPostTagPayload) => {
-      return await TagServices.createBlogPostTag(payload);
+    createBlogArticleTag: async (_: any, payload: BlogArticleTagPayload) => {
+      return await TagServices.createBlogArticleTag(payload);
     },
-    deleteBlogPostTag: async (_: any, payload: BlogPostTagPayload) => {
-      return await TagServices.deleteBlogPostTag(payload);
+    deleteBlogArticleTag: async (_: any, payload: BlogArticleTagPayload) => {
+      return await TagServices.deleteBlogArticleTag(payload);
     },
 
     // Following specific mutation
-    toggleUserFollow: async (_:any, payload: UserFollowPayload)=> {
+    toggleUserFollow: async (_: any, payload: UserFollowPayload) => {
       return await FollowServices.toggleUserFollow(payload);
     },
-    toggleBlogFollow: async (_:any, payload: BlogFollowPayload) =>{
-      return await FollowServices.toggleBlogFollow(payload)
-    }
+    toggleBlogFollow: async (_: any, payload: BlogFollowPayload) => {
+      return await FollowServices.toggleBlogFollow(payload);
+    },
   },
 };
 

@@ -1,7 +1,7 @@
 import { gql } from "graphql-tag";
 
 const typeDefs = gql`
-  scalar JSON
+  scalar Json
   scalar Date
 
   type User {
@@ -38,6 +38,7 @@ const typeDefs = gql`
     blogArticles: [BlogArticle]
     tags: [Tag]
     followers: [User]
+    user: User!
   }
 
   type BlogArticle {
@@ -46,7 +47,7 @@ const typeDefs = gql`
     blogId: ID!
     title: String!
     thumbnail: String
-    content: JSON!
+    content: Json!
     likes: [Like!]
     comments: [Comment!]
     createdAt: Date!
@@ -57,7 +58,7 @@ const typeDefs = gql`
     id: ID!
     userId: ID!
     thumbnail: String
-    content: JSON!
+    content: Json!
     likes: [Like!]
     comments: [Comment!]
     createdAt: Date!
@@ -69,10 +70,10 @@ const typeDefs = gql`
     userId: ID!
     postId: ID
     blogArticleId: ID
-    content: JSON!
+    content: Json!
     likes: [Like!]
     isEdited: Boolean
-    createdAt: Date!
+    createdAt: String!
   }
 
   type Tag {
@@ -101,7 +102,7 @@ const typeDefs = gql`
   type UserFollow {
     followerId: ID!
     followedId: ID!
-    createdAt: Date!
+    createdAt: String!
   }
 
   type UserFollowsBlog {
@@ -175,8 +176,8 @@ const typeDefs = gql`
     deleteBlog(id: ID!): Blog
 
     # Post specific mutation
-    createPost(userId: ID!, thumbnail: String, content: JSON!): Post
-    updatePost(id: ID!, thumbnail: String, content: JSON): Post
+    createPost(userId: ID!, thumbnail: String, content: Json!): Post
+    updatePost(id: ID!, thumbnail: String, content: Json): Post
     deletePost(id: ID!): Post
 
     # BlogArticle specific mutation
@@ -185,9 +186,14 @@ const typeDefs = gql`
       blogId: ID!
       title: String!
       thumbnail: String
-      content: JSON!
+      content: Json!
     ): BlogArticle
-    updateBlogArticle(id: ID!, thumbnail: String, content: JSON): BlogArticle
+    updateBlogArticle(
+      id: ID!
+      title: String
+      thumbnail: String
+      content: Json
+    ): BlogArticle
     deleteBlogArticle(id: ID!): BlogArticle
 
     # Like specific mutation
@@ -198,9 +204,9 @@ const typeDefs = gql`
       userId: ID!
       postId: ID
       blogArticleId: ID
-      content: JSON!
+      content: Json!
     ): Comment
-    updateComment(id: ID!, content: JSON!): Comment
+    updateComment(id: ID!, content: String!): Comment
     deleteComment(id: ID!): Comment
 
     # Tag specific mutation
