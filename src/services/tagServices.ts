@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BlogPostTagPayload, BlogTagPayload, PostTagPayload, TagPayload } from "@/app/interfaces/tag";
+import { BlogArticleTagPayload, BlogTagPayload, PostTagPayload, TagPayload } from "@/app/interfaces/tag";
 import { prismaClient } from "@/lib/db";
 import { cleanObject } from "@/utility/payloadHelper";
 import { Tag } from "@prisma/client";
@@ -43,7 +43,7 @@ export class TagServices {
         where: {
           postTags: { none: {} },
           blogTags: { none: {} },
-          blogPostTags: { none: {} },
+          blogArticleTags: { none: {} },
         },
       });
 
@@ -203,13 +203,13 @@ export class TagServices {
     }
   }
 
-  public static async createBlogPostTag(payload: BlogPostTagPayload) {
+  public static async createBlogArticleTag(payload: BlogArticleTagPayload) {
     try {
       const cleanObj = cleanObject(payload);
 
       if (Object.keys(cleanObj).length < 2) return {};
 
-      const { blogPostId, name } = payload;
+      const { blogArticleId, name } = payload;
       let tag: Tag;
 
       // Check if the tag already exists
@@ -226,9 +226,9 @@ export class TagServices {
       }
 
       // Register the tag in the postTag
-      return await prismaClient.blogPostTag.create({
+      return await prismaClient.blogArticleTag.create({
         data: {
-          blogPostId,
+          blogArticleId,
           tagId: tag.id,
         },
       });
@@ -238,13 +238,13 @@ export class TagServices {
     }
   }
 
-  public static async deleteBlogPostTag(payload: BlogPostTagPayload) {
+  public static async deleteBlogArticleTag(payload: BlogArticleTagPayload) {
     try {
       const cleanObj = cleanObject(payload);
 
       if (Object.keys(cleanObj).length < 2) return {};
 
-      const { blogPostId, name } = payload;
+      const { blogArticleId, name } = payload;
 
       // Check if the tag exists
       const tag = await prismaClient.tag.findFirst({
@@ -257,10 +257,10 @@ export class TagServices {
       }
 
       // Delete the tag from the postTag
-      const postTag = await prismaClient.blogPostTag.delete({
+      const postTag = await prismaClient.blogArticleTag.delete({
         where: {
-          blogPostId_tagId: {
-            blogPostId: blogPostId,
+          blogArticleId_tagId: {
+            blogArticleId: blogArticleId,
             tagId: tag.id,
           },
         },

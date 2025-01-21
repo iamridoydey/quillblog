@@ -19,14 +19,32 @@ export class BlogServices {
     const cleanObj = cleanObject(payload);
 
     if (Object.keys(cleanObj).length < 3) return {};
+    // Check whether the user exist or not
+    const isUserExist = await prismaClient.user.findFirst({
+      where: {
+        id: cleanObj.userId as string,
+      },
+    });
 
-    const isExist = await prismaClient.blog.findFirst({
+    if (!isUserExist) return {};
+
+    // Check whether the user has any prior blog or not
+    const hasPriorBlog = await prismaClient.blog.findFirst({
+      where: {
+        userId: cleanObj.userId as string,
+      },
+    });
+
+    if (hasPriorBlog) return {};
+
+    // Check whethere there is any blog exist in this short name
+    const isBlogExist = await prismaClient.blog.findFirst({
       where: {
         shortName: cleanObj.shortName as string,
       },
     });
 
-    if (isExist) return {};
+    if (isBlogExist) return {};
     return await prismaClient.blog.create({
       data: cleanObj as any,
     });
@@ -37,7 +55,7 @@ export class BlogServices {
     const { id, ...data } = payload;
     const cleanObj = cleanObject(data);
 
-    const isExist = await prismaClient.blog.findFirst({
+    const isExist = await prismaClient.blog.findUnique({
       where: {
         id: cleanObj.id as string,
       },
@@ -87,6 +105,15 @@ export class BlogServices {
     const key = cleanObject(payload);
 
     try {
+      // Fetch blog by userId since it's unique
+      if (key.userId) {
+        return await prismaClient.blog.findUnique({
+          where: {
+            userId: key.userId as string,
+          },
+        });
+      }
+      // Fallback to other filters (id, shortName, etc.)
       return await prismaClient.blog.findFirst({
         where: {
           ...key,
