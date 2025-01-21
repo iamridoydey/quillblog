@@ -14,7 +14,7 @@ export interface BlogTagPayload {
   name: string;
 }
 
-export interface BlogPostTagPayload {
-  blogPostId: string;
+export interface BlogArticleTagPayload {
+  blogArticleId: string;
   name: string;
 }
